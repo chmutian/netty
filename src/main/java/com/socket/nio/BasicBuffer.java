@@ -1,4 +1,4 @@
-package com.netty.nio;
+package com.socket.nio;
 
 import java.nio.IntBuffer;
 

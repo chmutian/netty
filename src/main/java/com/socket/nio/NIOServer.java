@@ -1,4 +1,4 @@
-package com.netty.nio;
+package com.socket.nio;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -48,7 +48,6 @@ public class NIOServer {
 				}
 				
 				iterator.remove(); 
-				
 				
 			}
 			
