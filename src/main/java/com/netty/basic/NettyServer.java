@@ -2,6 +2,7 @@ package com.netty.basic;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -31,8 +32,19 @@ public class NettyServer {
 					
 				}
 			});
-			ChannelFuture future = bootstrap.bind(6666).sync();
-			future.channel().closeFuture().sync();//监听关闭通道
+			ChannelFuture cf = bootstrap.bind(6666).sync();
+			cf.addListener(new ChannelFutureListener() {
+				
+				@Override
+				public void operationComplete(ChannelFuture future) throws Exception {
+					if (future.isSuccess()) {
+						System.out.println("start server success");
+					} else {
+						System.out.println("start server fail");
+					}
+				}
+			});
+			cf.channel().closeFuture().sync();//监听关闭通道
 		} finally {
 			bossGroup.shutdownGracefully();
 			workerGroup.shutdownGracefully();

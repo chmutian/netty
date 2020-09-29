@@ -1,5 +1,7 @@
 package com.netty.basic;
 
+import java.util.concurrent.TimeUnit;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -12,10 +14,46 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter{
 	 */
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		System.out.println("server cts:" + ctx);
-		ByteBuf buf = (ByteBuf)msg;
-		System.out.println("client ip: " + ctx.channel().remoteAddress());
-		System.out.println("client msg: " + buf.toString(CharsetUtil.UTF_8));
+		//用户自定义taskQueue 
+		ctx.channel().eventLoop().execute(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					TimeUnit.SECONDS.sleep(10);
+					ctx.writeAndFlush(Unpooled.copiedBuffer("hello client111", CharsetUtil.UTF_8));
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		ctx.channel().eventLoop().execute(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					TimeUnit.SECONDS.sleep(20);
+					ctx.writeAndFlush(Unpooled.copiedBuffer("hello client222", CharsetUtil.UTF_8));
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		
+		ctx.channel().eventLoop().schedule(new Runnable() {
+			
+			@Override
+			public void run() {
+				ctx.writeAndFlush(Unpooled.copiedBuffer("hello client333", CharsetUtil.UTF_8));
+			}
+		}, 5, TimeUnit.SECONDS);
+		
+//		System.out.println("server cts:" + ctx);
+//		ByteBuf buf = (ByteBuf)msg;
+//		System.out.println("client ip: " + ctx.channel().remoteAddress());
+//		System.out.println("client msg: " + buf.toString(CharsetUtil.UTF_8));
 	}
 	
 	/**
