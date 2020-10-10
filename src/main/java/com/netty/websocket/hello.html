@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<form onsubmit="return false;">
+	<textarea name ="reqMsg" style="width: 300px; height: 300px"></textarea>
+	<input type="button" onclick="send(this.form.reqMsg.value)" value="发送消息">
+	<textarea id ="respMsg" style="width: 300px; height: 300px"></textarea>
+</form>
+
+</body>
+<script>
+var socket;
+// 判断当前浏览器是否支持websocket
+if (window.WebSocket) {
+	socket = new WebSocket("ws://localhost:8888/hello");
+	//收到服务器端发送的消息
+	socket.onmessage = function(ev){
+		var rt = document.getElementById("respMsg");
+		rt.value = rt.value + "\n" + ev.data;
+	}
+	//连接开启
+	socket.onopen = function(ev){
+		var rt = document.getElementById("respMsg");
+		rt.value = "连接开启...";
+	}
+	//连接关闭
+	socket.onclose = function(ev){
+		var rt = document.getElementById("respMsg");
+		rt.value = rt.value + "\n" + "连接关闭...";
+	}
+}
+
+function send(msg){
+	if (!window.socket) {
+		return false;
+	}
+	if (socket.readyState == WebSocket.OPEN) {
+		socket.send(msg);
+	} else {
+		alert("连接尚未开启")
+	}
+}
+</script>
+</html>

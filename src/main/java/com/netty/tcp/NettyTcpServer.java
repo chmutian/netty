@@ -1,4 +1,4 @@
-package com.netty.basic;
+package com.netty.tcp;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -10,7 +10,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-public class NettyServer {
+public class NettyTcpServer {
 	
 	public static void main(String[] args) throws Exception {
 		// 创建bossGroup和workerGroup
@@ -28,7 +28,7 @@ public class NettyServer {
 				
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline().addLast(new NettyServerHandler());//设置管道处理器
+					ch.pipeline().addLast(new NettyTcpServerHandler());//设置管道处理器
 					
 				}
 			});

@@ -1,4 +1,4 @@
-package com.netty.basic;
+package com.netty.tcp;
 
 import java.util.concurrent.TimeUnit;
 
@@ -8,7 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
 
-public class NettyServerHandler extends ChannelInboundHandlerAdapter{
+public class NettyTcpServerHandler extends ChannelInboundHandlerAdapter{
 	/**
 	 * 读取通道数据
 	 */
